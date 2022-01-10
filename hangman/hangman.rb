@@ -63,9 +63,9 @@ class Hangman
   end
 
   def check_win
-    if not (@board.include?("_"))
+    if not(@board.include?("_"))
       puts "Hangman won!"
-    elsif not (@lives > 0)
+    elsif not(@lives > 0)
       puts "Host win!"
     else
       raise "Next move"
