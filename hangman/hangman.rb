@@ -14,7 +14,7 @@ class Hangman
     elsif answer == "n"
       input_secret_word
     else
-      raise "Please, restart the game"
+      abort "Please, restart the game"
     end
   end
 
@@ -47,15 +47,15 @@ class Hangman
   def start_game
     puts "Hangman game initialize..."
     choose_player
+    system "clear"
     setup_board
-    output_board
     begin
+      output_wrong_guesses_and_lives
+      output_board
       print "Please, make guess: "
       @guess = make_guess
       check_input
       update_board
-      output_wrong_guesses_and_lives
-      output_board
       check_win
     rescue
       retry
@@ -63,9 +63,9 @@ class Hangman
   end
 
   def check_win
-    if not(@board.include?("_"))
+    if not (@board.include?("_"))
       puts "Hangman won!"
-    elsif not(@lives > 0)
+    elsif not (@lives > 0)
       puts "Host win!"
     else
       raise "Next move"
@@ -75,15 +75,20 @@ class Hangman
   def check_input
     if @guess.length > 1
       puts "You need to enter one letter."
-      output_wrong_guesses_and_lives
-      output_board
-      raise "Wrong input"
-    elsif @wrong_guesses.include?(@guess) or @board.include?(@guess)
+      output_for_check_input
+    elsif @wrong_guesses.include?(@guess) || @board.include?(@guess)
       puts "This letter has already been used."
-      output_wrong_guesses_and_lives
-      output_board
-      raise "Wrong input"
+      output_for_check_input
+    elsif not (@guess.match(/^[[:alpha:]]$/))
+      puts "The entered character must be a letter."
+      output_for_check_input
     end
+  end
+
+  def output_for_check_input
+    output_wrong_guesses_and_lives
+    output_board
+    raise "Wrong input"
   end
 
   def update_board
@@ -109,7 +114,7 @@ class Hangman
 
   def output_wrong_guesses_and_lives
     puts "Your have #{@lives} lives."
-    puts "Wrong guesses: #{@wrong_guesses.join(",")}."
+    puts "Wrong guesses: #{@wrong_guesses.join(",")}"
   end
 end
 
