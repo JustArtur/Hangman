@@ -45,10 +45,6 @@ class Hangman
   end
 
   def start_game
-    # Выбрать игрока
-    # Получить на вход букву
-    # Проверить букву в секретном слове
-    # Проверить победу или поражение
     puts "Hangman game initialize..."
     choose_player
     setup_board
